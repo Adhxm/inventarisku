@@ -75,7 +75,7 @@ session_start();
             <?php
               if(@$level == "3"){
                 ?>
-                <li><a href="?p=peminjaman">Peminjaman</a></li>
+                <li><a href="?p=peminjaman01">Peminjaman</a></li>
                 <?php
               }
             ?>
@@ -140,6 +140,10 @@ session_start();
             case 'edit_barang':
                 include "page/edit_barang.php";
                 break;
+            
+            case 'peminjaman01':
+                include "page/peminjaman01.php";
+                break;
 
             case 'hapus':
                 include "page/hapus_barang.php";
@@ -168,3 +172,10 @@ session_start();
     <script src="js/ie10-viewport-bug-workaround.js"></script>
   </body>
 </html>
+<script type="text/javascript">
+  $(document).on('click', '#cetak', function(){
+    var tgl_awal = $("#tgl_awal").val();
+    var tgl_sampai = $("#tgl_sampai").val();
+    window.open('page/cetak.php?tgl_awal='+tgl_awal+"&tgl_sampai="+tgl_sampai, '_blank');
+  });
+</script>

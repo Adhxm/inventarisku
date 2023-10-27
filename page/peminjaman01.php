@@ -96,7 +96,7 @@
                             if($q_detail_pinjam){
                                 ?>
                                     <script type="text/javascript">
-                                        window.location.href="?p=peminjaman"
+                                        window.location.href="?p=peminjaman01"
                                     </script>
                                 <?php
                             }else{
@@ -124,7 +124,6 @@
                                 <th>Jml</th>
                                 <th>Tgl.Kembali</th>
                                 <th>Status</th>
-                                <th>Opsi</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -155,15 +154,6 @@
                                                             echo"<label class='label label-warning'>Dipinjam</label>";
                                                         }else{
                                                             echo"<label class='label label-success'>Dikembalikan</label>";
-                                                        }
-                                                    ?>
-                                                </td>
-                                                <td>
-                                                    <?php
-                                                        if($data_d['status_peminjaman'] == '0'){
-                                                            ?>
-                                                                <a onclick = "return confirm('Apakah anda yakin?')" href="page/proses_peminjaman.php?id_peminjaman=<?=$data_d['id_peminjaman']?>" class="btn btn-sm btn-primary">Proses</a>
-                                                            <?php
                                                         }
                                                     ?>
                                                 </td>

@@ -29,7 +29,7 @@
                     </thead>
                     <tbody>
                         <?php
-                            $hari = date('d,m,y');
+                            $hari = date('d-m-y');
                             $d_peminjaman = "SELECT *, detail_pinjam.jumlah as jml FROM detail_pinjam left join peminjaman on peminjaman.id_peminjaman = detail_pinjam.id_peminjaman left join inventaris on inventaris.id_inventaris = detail_pinjam.id_inventaris left join pegawai on pegawai.id_pegawai = peminjaman.id_pegawai WHERE peminjaman.status_peminjaman ='1'" ;
 
                             $d_query = mysqli_query($koneksi,$d_peminjaman);

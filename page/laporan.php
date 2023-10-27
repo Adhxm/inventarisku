@@ -7,22 +7,26 @@
     <title>laporan</title>
 </head>
 <body>
+    <?php
+        $hari_ini = date('d-m-y');
+    ?>
     <div class="col-lg-12">
         <div class="panel panel-primary">
             <div class="panel-heading">Laporan Peminjaman Inventaris</div>
             <div class="panel-body">
                 <form action="" class="form-inline">
+                    <input type="hidden" name="p" value="laporan">
                     <div class="form-group">
                         <label for="">Tanggal Awal</label><br>
-                        <input type="date" name="tglDari" id="tgl_awal" class="form-control">
+                        <input type="date" name="tglDari" id="tgl_awal" class="form-control" value="<?= !empty($_GET['tglDari'])? $_GET ['tglDari'] : $hari_ini?>">
                     </div>
                     <div class="form-group">
                         <label for="">Tanggal Sampai</label><br>
-                        <input type="date" name="tglSampai" id="tgl_sampai" class="form-control">
+                        <input type="date" name="tglSampai" id="tgl_sampai" class="form-control" value="<?= !empty($_GET['tglSampai'])? $_GET ['tglSampai'] : $hari_ini?>">
                     </div>
                     <div class="form-group">
-                        <input type="submit" name="" id="" class="btn btn-sm btn-primary" value="Filter">
-                        <button class="btn btn-sm btn-success">Cetak Laporan</button>
+                        <input type="submit" name="cari" id="" class="btn btn-sm btn-primary" value="Filter">
+                        <button class="btn btn-sm btn-success" id="cetak">Cetak Laporan</button>
                     </div>
                 </form>
                 <br>
@@ -38,14 +42,58 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
+                        <?php
+                            $cari = '';
+                            @$tglDari = $_GET['tglDari'];
+                            @$tglSampai = $_GET['tglSampai'];
+
+                            if(!empty($tglDari)){
+                                $cari .="and tanggal_pinjam >= '".$tglDari."'";
+                                
+                            }
+                            if(!empty($tglSampai)){
+                                $cari .="and tanggal_pinjam <= '".$tglSampai."'";
+
+                            }
+                            // if(empty($tglDari) && empty($tglSampai)){
+                            //     $cari .= "and tanggal_pinjam >= '".$hari_ini."' and tanggal_pinjam <='".$hari_ini."'";
+                            // }
+                            
+                            $sql = "SELECT *, detail_pinjam.jumlah as jml FROM detail_pinjam left join peminjaman on peminjaman.id_peminjaman = detail_pinjam.id_peminjaman left join inventaris on inventaris.id_inventaris = detail_pinjam.id_inventaris left join pegawai on pegawai.id_pegawai = peminjaman.id_pegawai WHERE 1=1 $cari" ;
+
+                            $query = mysqli_query($koneksi, $sql);
+                            $cek = mysqli_num_rows($query);
+                            
+                            if($cek > 0){
+                                $no=1;
+                                while($data = mysqli_fetch_array($query)){
+                                    ?>
+                                        <tr>
+                                            <td><?=$no++?></td>
+                                            <td><?=$data['nama_pegawai']?></td>
+                                            <td><?=$data['nama']?></td>
+                                            <td><?=$data['jml']?></td>
+                                            <td><?=$data['tanggal_pinjam']?></td>
+                                            <td><?=$data['tanggal_kembali']?></td>
+                                        </tr>
+                                    <?php
+                                }
+                            }else{
+                                ?>
+                                 <tr>
+                                    <td colspan="6">Tidak Ada Data</td>
+                                 </tr>
+                                <?php
+                            }
+                        ?>
+                        <!-- <tr>
                             <td>1</td>
                             <td>Suleman</td>
                             <td>Laptop</td>
                             <td>102</td>
                             <td>12-12-2023</td>
                             <td>13-12-2023</td>
-                        </tr>
+                        </tr> -->
                     </tbody>
                 </table>
             </div>
